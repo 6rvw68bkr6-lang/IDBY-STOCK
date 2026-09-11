@@ -31,6 +31,8 @@
 
 .studio-order-link{padding:18px 22px;background:#f7faf3;border-top:1px solid var(--line)}.studio-link-top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}.studio-link-top strong{font-size:14px}.studio-link-top small{display:block;color:var(--muted);font-size:12px;margin-top:5px}.studio-link-top a{font-size:12px;color:#4f6541;text-decoration:underline;text-underline-offset:3px}.studio-order-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:13px}.studio-order-chips button{display:flex;align-items:center;gap:6px;padding:6px 9px;border:1px solid #dce4d5;border-radius:7px;background:white;font-size:12px;color:#53634a}.studio-order-chips i{width:10px;height:10px;border-radius:50%;border:1px solid #0002}.studio-order-chips button[aria-pressed=true]{border-color:#77965b;background:#ecf4e2}.studio-linked-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:15px}.studio-linked-metrics a{display:block;border-top:1px solid #dce4d5;padding-top:12px;text-decoration:none;color:#526547;font-size:12px}.studio-linked-metrics b{display:block;font-size:20px;color:#334a28;font-weight:600;margin-top:4px}.studio-linked-metrics small{display:block;font-size:11px;line-height:1.6;color:#798571;margin-top:3px}.matrix .cell{position:relative;text-align:left;font:inherit;cursor:pointer;border:1px solid transparent;border-radius:6px}.matrix .cell:hover{border-color:#a6bb8b}.matrix .cell[aria-pressed=true]{outline:2px solid #698a4b;outline-offset:-2px}.matrix .cell[aria-pressed=true]:after{content:'✓';position:absolute;right:5px;top:3px;font-size:11px;color:#47682f}.matrix .mrow.is-focused .mlabel{color:#46682d;background:#edf4e5}.linked-context{font-size:12px;color:#77846a}.native-corrected{color:#795a98}a:focus-visible,button:focus-visible{outline:2px solid #668444;outline-offset:3px}@media(max-width:500px){.studio-order-link{padding:16px}.studio-linked-metrics{gap:8px}.studio-linked-metrics b{font-size:17px}}
 .matrix .cell .bar{display:block;height:3px;margin-top:6px}.matrix .cell .bar i{height:3px;border:0;border-radius:3px}
+
+.sheet-connection{margin-bottom:22px;border:1px solid #dce6d3;border-radius:12px;background:#f7faf3;padding:16px 20px}.sheet-connection[data-state=error]{background:#fff7ed;border-color:#edd5b8}.sheet-connection-top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}.sheet-source{display:flex;align-items:flex-start;gap:10px}.sheet-indicator{width:8px;height:8px;border-radius:50%;background:#98a78b;margin-top:6px;flex-shrink:0}.sheet-connection[data-state=live] .sheet-indicator{background:#658b43;box-shadow:0 0 0 4px #658b4315}.sheet-connection[data-state=error] .sheet-indicator{background:#bd8443}.sheet-source strong{font-size:14px;color:#405636}.sheet-source p{font-size:12px;line-height:1.7;color:#69795e;margin-top:3px}.sheet-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.sheet-actions button,.sheet-actions>a{font-size:12px;border:1px solid #c9d8bd;border-radius:7px;padding:8px 11px;white-space:nowrap;background:#fff;color:#435b35}.sheet-actions button{background:#334b2b;color:white;border-color:#334b2b}.sheet-actions button:disabled{opacity:.55;cursor:wait}.sheet-actions label{display:flex;align-items:center;gap:5px;font-size:12px;color:#596e4d}.sheet-actions input{accent-color:#607e47}.sheet-meta{display:flex;gap:16px;flex-wrap:wrap;font-size:11px;color:#758369;margin-top:10px}.sheet-details{margin-top:12px;font-size:12px;color:#627357;border-top:1px solid #e1e8db;padding-top:10px;line-height:1.8}.sheet-details summary{cursor:pointer;display:list-item}.sheet-details p{margin-top:6px}.sheet-details ul{padding-left:18px;margin-top:6px}@media(max-width:600px){.sheet-connection{padding:15px}.sheet-actions{gap:8px}.sheet-source{width:100%}}
 </style>
 </head>
 <body>
@@ -46,7 +48,7 @@
   <a href="#production-section" aria-label="생산 · 발주"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="5" width="14" height="16" rx="2"/><path d="M9 5V3h6v2M9 11h6M9 15h6"/></svg><span>생산 · 발주</span></a>
   <a href="#inventory-section" aria-label="재고 현황"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="M3 8v9l9 5 9-5V8M12 13v9M7.5 5.5l9 5"/></svg><span>재고 현황</span></a>
  </nav>
- <div class="sidebar-bottom"><div class="data-card"><strong>파일 기준 데이터</strong>업로드된 HTML의 재고로<br>주문 가능 여부를 계산합니다.</div><div class="side-credit"><b>FRAME BY</b>Internal operations</div></div>
+ <div class="sidebar-bottom"><div class="data-card"><strong id="sheetSidebar">구글 시트 확인 중</strong>조회한 재고를 바탕으로<br>주문 가능 여부를 계산합니다.</div><div class="side-credit"><b>FRAME BY</b>Internal operations</div></div>
 </aside>
 <div class="app" id="overview">
  <header class="top"><div class="breadcrumb"><span>Workspace</span><span class="slash">/</span><strong>IDBY Operations</strong></div><div class="top-right"><span class="snapshot">SNAPSHOT</span><span class="avatar">FB</span></div></header>
@@ -56,6 +58,11 @@
   <div class="command"><div class="cmd-prefix"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5L12 3Z"/></svg><span>빠른 분석</span></div><label class="sr-only" for="aiPrompt">분석 요청</label><input id="aiPrompt" placeholder="예: 2,000개 블랙 위주 조합 / 재고 위험 / 부족 자재 발주"><button onclick="askAI()">분석하기 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
   
 
+<section class="sheet-connection" id="sheetConnection" data-state="loading" aria-label="구글 스프레드시트 연결">
+ <div class="sheet-connection-top"><div class="sheet-source"><i class="sheet-indicator" aria-hidden="true"></i><div><strong>IDBY 재고관리시스템</strong><p id="sheetStatus" role="status">시트 연결 준비 중 · 파일에 포함된 재고를 표시합니다.</p></div></div><div class="sheet-actions"><label><input id="sheetAuto" type="checkbox" checked onchange="setSheetsAuto(this.checked)">1분마다 갱신</label><a href="https://docs.google.com/spreadsheets/d/1MYDw1igy2jXlgrvyO5wfRPrX2YloS5ifCSBaHRCG1OI/edit?usp=drivesdk" target="_blank" rel="noopener noreferrer">시트 열기 ↗</a><button id="sheetRefresh" onclick="syncGoogleSheets()">지금 새로고침</button></div></div>
+ <div class="sheet-meta"><span id="sheetUpdated">파일에 포함된 재고 표시 중</span><span id="sheetCounts">조립부품 · 사출품 · 자재 · BOM 연결</span><span>재고 조회 전용</span></div>
+ <details class="sheet-details"><summary>어떤 데이터가 연결되나요?</summary><ul><li>33_조립부품재고현황 → 색상별 현재고·안전재고</li><li>31_사출품재고현황 / 32_자재재고현황 → 사내재고·안전재고</li><li>01_사출품마스터 → 금형·캐비티수</li><li>10_1차조립BOM / 11_최종조립BOM → 투입품·소요량</li></ul><p>시트에 입출고·재고조정을 기록한 뒤 ‘지금 새로고침’을 누르세요. 구글 측 계산과 조회 반영에 시간이 걸릴 수 있습니다. 자동 갱신은 이 화면을 보고 있을 때 동작합니다.</p><p>색상·수량 선택은 시트 재고를 차감하지 않습니다. 현재 생산·발주 계산은 사내재고 기준이며 외주 진행중 수량은 차감하지 않습니다. 최종 BOM은 A–G 각 1개 구성을 지원합니다.</p></details>
+</section>
 <section class="native-studio" id="productStudio" aria-label="IDBY 커스텀 스튜디오">
  <div class="native-head"><div><h2>IDBY 커스텀 스튜디오</h2><p>부품별 색상을 고르고, 현재 재고로 가능한 주문을 확인하세요.</p></div><span class="native-badge">A–G 재고 연결</span></div>
  <div class="native-grid"><div class="native-stage"><div class="native-stage-top"><b id="studioStatus">원본 이미지 준비 중</b><span>PRODUCT PREVIEW</span></div><div class="native-board"><canvas id="studioCanvas" width="1300" height="1935" role="img" aria-label="선택한 A–G 색상이 원본 이미지로 표시되는 제품 미리보기. 부품별 색상 버튼으로 조작할 수 있습니다."></canvas><div class="native-pins" id="studioPins"></div><div class="native-placeholder" id="studioMissingF" hidden><b>F</b><span>이미지 없음</span></div><div class="native-working" id="studioWorking"><span class="native-work-label">원본 이미지 반영 중</span></div></div><div class="native-stage-bottom"><div><strong id="studioFocus">D · 바디 전면</strong><br><span id="studioViewLabel">선택 조합</span></div><button id="studioCompare" aria-pressed="false" onclick="toggleStudioCompare()">기본 이미지와 비교</button></div></div>
@@ -83,7 +90,7 @@
   <section class="section" id="alternatives-section"><div class="sec-head"><div><h3>더 나은 조합 찾기</h3><p><span id="alternativesContext">현재 주문 기준</span> · 조합을 적용하면 제품과 계산에 함께 반영됩니다.</p></div><span class="section-code">01 / CONFIGURATION</span></div><div class="two"><div class="window"><div class="subbar"><b>대체 가능한 색상</b><span>부족 파트 기준</span></div><div id="alternatives"></div></div><div class="window"><div class="subbar"><b>최소 변경 추천</b><span>현재 주문 기준</span></div><div class="rec" id="recommendation"></div></div></div></section>
   <section class="section" id="production-section"><div class="sec-head"><div><h3>생산과 발주</h3><p><span id="productionContext">현재 주문 기준</span> · 선택한 색상을 유지할 때 필요한 항목입니다.</p></div><span class="section-code">02 / PRODUCTION</span></div><div class="two"><div class="window"><div class="subbar"><b>추가 생산 · 자재 발주</b><span>선택 조합 기준</span></div><div id="production"></div><div class="note">일부 캐비티 수·안전재고·리드타임은 확인이 필요합니다. 완료 예정일은 계산하지 않습니다.</div></div><div class="window"><div class="subbar"><b>재고 점검 우선순위</b><span>전체 재고 기준 · 재고 ÷ 안전재고</span></div><div id="priority"></div></div></div></section>
   <section class="section" id="inventory-section"><div class="sec-head"><div><h3>전체 재고 맵</h3><p>체크 표시는 현재 선택한 색상입니다. 재고 칸을 누르면 제품과 주문 색상이 바뀝니다.</p></div><span class="section-code">03 / INVENTORY</span></div><div class="window"><div class="subbar"><b>조립부품 A–G</b><span>단위: 개</span></div><div class="matrix" id="matrix" tabindex="0" role="region" aria-label="색상별 재고 표. 좁은 화면에서는 가로로 이동하세요."></div><div class="legend"><span><i></i>800개 이상</span><span><i class="mid"></i>300–799개</span><span><i class="low"></i>300개 미만</span><span>색상은 재고 구간을 표시하며 안전재고 기준과 다릅니다.</span></div></div></section>
-  <footer class="footer"><b>IDBY Operations · FRAME BY</b><span>업로드 파일 기준 · 실시간 재고 및 외부 AI 미연결</span></footer>
+  <footer class="footer"><b>IDBY Operations · FRAME BY</b><span id="sheetFooter">파일에 포함된 재고 표시 중 · 구글 시트 연결 준비</span></footer>
  </main>
 </div>
 
@@ -458,6 +465,140 @@ studioCanvas.addEventListener('click',event=>{
  }
 });
 renderStudioControls();renderStudioLinks();requestStudioRender();
+</script>
+<script>
+// Read-only Google Visualization data source. Exact workbook and tab IDs verified through Drive.
+const SHEET_SOURCE={id:'1MYDw1igy2jXlgrvyO5wfRPrX2YloS5ifCSBaHRCG1OI',url:'https://docs.google.com/spreadsheets/d/1MYDw1igy2jXlgrvyO5wfRPrX2YloS5ifCSBaHRCG1OI/edit?usp=drivesdk'};
+const SHEET_TABS=[
+ {key:'assembly',name:'33_조립부품재고현황',gid:987063623,range:'A3:K1000',headers:['조립부품코드','파트ID','파트명','색상코드','조립입고','최종조립 소모','조정','현재고','안전재고','상태','보충필요']},
+ {key:'injection',name:'31_사출품재고현황',gid:663818756,range:'A3:N1000',headers:['사출품코드','부품번호','금형','색상코드','입고','검수불량','조립의뢰 출고','조정','사내재고','외주 진행중','총보유','안전재고','상태','발주필요']},
+ {key:'materials',name:'32_자재재고현황',gid:2001579381,range:'A4:K1000',headers:['자재코드','자재명','투입단계','조정(입고포함)','조립의뢰 출고','최종조립 소모','사내재고','외주 진행중','총보유','안전재고','상태']},
+ {key:'molds',name:'01_사출품마스터',gid:1832832436,range:'A1:J1000',headers:['사출품코드','부품번호','부품명','금형','캐비티수','색상코드','색상명','안전재고','리드타임(주)','MOQ']},
+ {key:'firstBom',name:'10_1차조립BOM',gid:1167447527,range:'A1:H1000',headers:['파트ID','파트명','투입구분','투입품코드기준','투입품명','소요량','색상연동','비고']},
+ {key:'finalBom',name:'11_최종조립BOM',gid:411733822,range:'A1:G1000',headers:['완제품SKU','제품명','투입구분','투입품코드기준','투입품명','소요량','색상연동']}
+];
+const sheetsSync={busy:false,sequence:0,lastSuccess:null,source:'file',auto:true};
+const SHEET_CACHE_KEY='idby-sheets-v1:'+SHEET_SOURCE.id;
+function sheetLabel(value){return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function sheetText(value){return String(value??'').trim();}
+function sheetNumber(value,label,min=0){
+ if(typeof value!=='number'||!Number.isFinite(value)||!Number.isInteger(value)||value<min)throw Error(label+': 유효한 정수 재고·수량을 확인하세요.');
+ return value;
+}
+function sheetRows(response,tab){
+ if(response?.status!=='ok'||!Array.isArray(response.table?.cols)||!Array.isArray(response.table?.rows))throw Error(tab.name+': 데이터를 온전히 읽지 못했습니다.');
+ const labels=response.table.cols.map(c=>sheetText(c.label));
+ for(const required of tab.headers){if(!labels.includes(required))throw Error(tab.name+': 열 제목 "'+required+'"을 확인하세요.');}
+ // Bind by header name, so column order is not assumed within the configured range.
+ return response.table.rows.filter(row=>row.c?.some(cell=>cell?.v!==null&&cell?.v!==undefined&&cell?.v!=='')).filter(row=>row.c.slice(1).some(cell=>cell?.v!==null&&cell?.v!==undefined&&cell?.v!=='')||/^(?:IDBY-|MLD-|MAT-|[A-G]$)/.test(sheetText(row.c[0]?.v))).map((row,index)=>{
+  const item={};labels.forEach((name,i)=>{item[name]=row.c?.[i]?.v??null;});
+  if(index>=995)throw Error(tab.name+': 조회 범위 확장이 필요합니다.');
+  return item;
+ });
+}
+function buildSheetData(responses){
+ const rows=Object.fromEntries(SHEET_TABS.map(t=>[t.key,sheetRows(responses[t.key],t)]));
+ const next={assembly:{},injection:{},materials:{},molds:{},firstBom:[],finalBom:[]};
+ const put=(map,key,value)=>{if(Object.hasOwn(map,key))throw Error(key+': 중복 품목 코드입니다.');map[key]=value;};
+ const checkColor=c=>{if(!Object.hasOwn(COLORS,c))throw Error('지원하지 않는 색상 코드: '+c);};
+ for(const r of rows.assembly){
+  const code=sheetText(r['조립부품코드']),p=sheetText(r['파트ID']),c=sheetText(r['색상코드']);checkColor(c);
+  if(!PARTS.some(x=>x.id===p)||code!==`IDBY-${p}-${c}`)throw Error('조립부품 코드와 파트·색상 불일치: '+code);
+  put(next.assembly,code,{part:p,name:PARTS.find(x=>x.id===p).name,color:c,stock:sheetNumber(r['현재고'],code+' 현재고'),safety:sheetNumber(r['안전재고'],code+' 안전재고'),status:sheetLabel(r['상태'])});
+ }
+ for(const r of rows.injection){
+  const code=sheetText(r['사출품코드']),c=sheetText(r['색상코드']);checkColor(c);
+  if(!/^MLD-\d{2}-[A-Z]{2}$/.test(code)||!code.endsWith('-'+c))throw Error('사출품 코드 오류: '+code);
+  put(next.injection,code,{partNo:sheetNumber(r['부품번호'],code+' 부품번호',1),mold:sheetLabel(r['금형']),color:c,stock:sheetNumber(r['사내재고'],code+' 사내재고'),safety:sheetNumber(r['안전재고'],code+' 안전재고'),status:sheetLabel(r['상태'])});
+ }
+ for(const r of rows.materials){
+  const code=sheetText(r['자재코드']);if(!/^MAT-[A-Z0-9_-]+$/.test(code))throw Error('자재 코드 오류: '+code);
+  put(next.materials,code,{name:sheetLabel(r['자재명']),stage:sheetLabel(r['투입단계']),stock:sheetNumber(r['사내재고'],code+' 사내재고'),safety:sheetNumber(r['안전재고'],code+' 안전재고'),status:sheetLabel(r['상태'])});
+ }
+ for(const r of rows.molds){
+  const code=sheetText(r['사출품코드']),c=sheetText(r['색상코드']);checkColor(c);
+  if(!/^MLD-\d{2}-[A-Z]{2}$/.test(code)||!code.endsWith('-'+c))throw Error('금형 마스터 코드 오류: '+code);
+  put(next.molds,code,{partNo:sheetNumber(r['부품번호'],code+' 부품번호',1),mold:sheetLabel(r['금형']),cavity:sheetNumber(r['캐비티수'],code+' 캐비티수',1),color:c});
+ }
+ for(const r of rows.firstBom){
+  const part=sheetText(r['파트ID']),type=sheetText(r['투입구분']),itemPattern=sheetText(r['투입품코드기준']);
+  if(!PARTS.some(p=>p.id===part)||!['사출품','자재'].includes(type))throw Error('1차 BOM 파트·투입구분을 확인하세요.');
+  if(type==='사출품'?!/^MLD-\d{2}-\[색상\]$/.test(itemPattern):!/^MAT-[A-Z0-9_-]+$/.test(itemPattern))throw Error('1차 BOM 투입품 코드 오류');
+  next.firstBom.push({part,partName:PARTS.find(p=>p.id===part).name,type,itemPattern,itemName:sheetLabel(r['투입품명']),qty:sheetNumber(r['소요량'],itemPattern+' 소요량',1),colorLinked:sheetText(r['색상연동'])});
+ }
+ for(const r of rows.finalBom){
+  const sku=sheetText(r['완제품SKU']),type=sheetText(r['투입구분']),itemPattern=sheetText(r['투입품코드기준']);
+  if(sku!=='IDBY-SET'||!['조립부품','자재'].includes(type))throw Error('최종 BOM: 현재 IDBY-SET 구성만 지원합니다.');
+  if(type==='조립부품'?!/^IDBY-[A-G]-\[색상\]$/.test(itemPattern):!/^MAT-[A-Z0-9_-]+$/.test(itemPattern))throw Error('최종 BOM 투입품 코드 오류');
+  next.finalBom.push({sku,product:sheetLabel(r['제품명']),type,itemPattern,itemName:sheetLabel(r['투입품명']),qty:sheetNumber(r['소요량'],itemPattern+' 소요량',1),colorLinked:sheetText(r['색상연동'])});
+ }
+ for(const p of PARTS){
+  for(const c of COLOR_ORDER)if(!next.assembly[`IDBY-${p.id}-${c}`])throw Error(p.id+' '+c+': 조립부품 재고가 누락되었습니다.');
+  if(!next.firstBom.some(b=>b.part===p.id))throw Error(p.id+': 1차 BOM이 누락되었습니다.');
+  const finals=next.finalBom.filter(b=>b.type==='조립부품'&&b.itemPattern===`IDBY-${p.id}-[색상]`);
+  if(finals.length!==1||finals[0].qty!==1)throw Error('최종 BOM은 A–G 각 1개 구성이어야 합니다. 변경된 구성은 계산식 수정이 필요합니다.');
+ }
+ const keys=new Set();
+ for(const b of next.firstBom){
+  const key=b.part+'|'+b.type+'|'+b.itemPattern;if(keys.has(key))throw Error('1차 BOM 중복 투입 행: '+b.itemPattern);keys.add(key);
+  if(b.type==='사출품')for(const c of COLOR_ORDER){const code=b.itemPattern.replace('[색상]',c);if(!next.injection[code]||!next.molds[code])throw Error(code+': 사출품 재고 또는 금형 정보 누락');}
+ }
+ for(const b of [...next.firstBom,...next.finalBom])if(b.type==='자재'&&!next.materials[b.itemPattern])throw Error(b.itemPattern+': 자재 재고 누락');
+ const materialRows=next.finalBom.filter(b=>b.type==='자재');
+ if(!materialRows.length||new Set(materialRows.map(b=>b.itemPattern)).size!==materialRows.length)throw Error('최종 자재 BOM 누락 또는 중복');
+ return next;
+}
+function requestSheetTab(tab){
+ return new Promise((resolve,reject)=>{
+  const callback='idbySheetResponse_'+(++sheetsSync.sequence),script=document.createElement('script');let finished=false;
+  const finish=(error,result)=>{if(finished)return;finished=true;clearTimeout(timer);script.remove();delete window[callback];error?reject(error):resolve(result);};
+  const timer=setTimeout(()=>finish(Error(tab.name+': 응답 시간 초과. 인터넷 연결과 시트 보기 권한을 확인하세요.')),25000);
+  window[callback]=response=>finish(null,response);
+  script.onerror=()=>finish(Error(tab.name+': 연결 실패. 인터넷 연결과 시트 보기 권한을 확인하세요.'));
+  const params=new URLSearchParams({gid:String(tab.gid),range:tab.range,headers:'1',tqx:'out:json;responseHandler:'+callback,_:String(Date.now())});
+  script.src='https://docs.google.com/spreadsheets/d/'+SHEET_SOURCE.id+'/gviz/tq?'+params;
+  script.referrerPolicy='no-referrer';document.head.appendChild(script);
+ });
+}
+function sheetTime(iso){return new Date(iso).toLocaleString('ko-KR',{timeZone:'Asia/Seoul',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});}
+function refreshSheetCalculations(){updateBeforeNativeStudio();renderStudioControls();renderStudioLinks();}
+function setSheetStatus(kind,message){
+ document.getElementById('sheetConnection').dataset.state=kind;
+ document.getElementById('sheetStatus').textContent=message;
+ const stamp=sheetsSync.lastSuccess?'마지막 조회 '+sheetTime(sheetsSync.lastSuccess)+' (한국 시간)':'파일에 포함된 재고 표시 중';
+ document.getElementById('sheetUpdated').textContent=stamp;
+ document.getElementById('sheetSidebar').textContent=kind==='live'?'구글 시트 연결됨':kind==='loading'?'구글 시트 확인 중':'저장된 재고 표시 중';
+ document.getElementById('sheetFooter').textContent=(kind==='live'?'구글 시트 조회 완료 · ':kind==='loading'?'구글 시트 확인 중 · ':'최신 재고 미확인 · ')+stamp;
+}
+async function syncGoogleSheets(){
+ if(sheetsSync.busy)return;
+ sheetsSync.busy=true;document.getElementById('sheetRefresh').disabled=true;
+ setSheetStatus('loading','시트에서 재고를 불러오는 중…');
+ try{
+  const results=await Promise.allSettled(SHEET_TABS.map(requestSheetTab));
+  const failure=results.find(r=>r.status==='rejected');if(failure)throw failure.reason;
+  const responses=Object.fromEntries(SHEET_TABS.map((t,i)=>[t.key,results[i].value]));
+  const next=buildSheetData(responses); // Validate all six tables before committing any data.
+  Object.assign(DATA,next);sheetsSync.lastSuccess=new Date().toISOString();sheetsSync.source='live';
+  refreshSheetCalculations();
+  try{localStorage.setItem(SHEET_CACHE_KEY,JSON.stringify({version:1,sheetId:SHEET_SOURCE.id,fetchedAt:sheetsSync.lastSuccess,responses}));}catch(_){}
+  document.getElementById('sheetCounts').textContent=`조립부품 ${Object.keys(next.assembly).length} · 사출품 ${Object.keys(next.injection).length} · 자재 ${Object.keys(next.materials).length}품목`;
+  setSheetStatus('live','구글 시트 재고 반영 완료');
+ }catch(error){setSheetStatus('error','갱신 실패 · '+(error?.message||'연결을 확인하세요.')+' 이전 재고를 유지합니다.');}
+ finally{sheetsSync.busy=false;document.getElementById('sheetRefresh').disabled=false;}
+}
+function setSheetsAuto(enabled){sheetsSync.auto=Boolean(enabled);}
+function restoreSheetCache(){
+ try{
+  const cached=JSON.parse(localStorage.getItem(SHEET_CACHE_KEY)||'null');
+  if(cached?.version!==1||cached.sheetId!==SHEET_SOURCE.id||!Number.isFinite(Date.parse(cached.fetchedAt))||Date.parse(cached.fetchedAt)>Date.now()+60000)return;
+  const next=buildSheetData(cached.responses);Object.assign(DATA,next);sheetsSync.lastSuccess=cached.fetchedAt;sheetsSync.source='cache';refreshSheetCalculations();
+ }catch(_){}
+}
+restoreSheetCache();syncGoogleSheets();
+setInterval(()=>{if(sheetsSync.auto&&document.visibilityState==='visible')syncGoogleSheets();},60000);
+document.addEventListener('visibilitychange',()=>{if(sheetsSync.auto&&document.visibilityState==='visible'&&(!sheetsSync.lastSuccess||Date.now()-Date.parse(sheetsSync.lastSuccess)>=60000))syncGoogleSheets();});
+
 </script>
 </body>
 </html>
